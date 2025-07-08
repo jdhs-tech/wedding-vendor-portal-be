@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  # Node.js Backend Application
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wedding-portal-backend
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      PORT: 5001
+      MONGO_URL: ${MONGO_URL}
+      SECRET_KEY: ${SECRET_KEY}
+      NODE_ENV: ${NODE_ENV}
+    env_file:
+      - .env.docker
+    networks:
+      - wedding-portal-network
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+networks:
+  wedding-portal-network:
+    driver: bridge
